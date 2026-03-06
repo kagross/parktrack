@@ -94,25 +94,30 @@
     .history-btn:active { background: #eee; }
 
     /* BUSYNESS SCREEN */
-    #screen-busy { align-items: center; justify-content: center; gap: 32px; }
+    #screen-busy { align-items: center; justify-content: center; gap: 40px; }
 
-    .busy-question { font-size: 18px; font-weight: 600; text-align: center; padding: 0 32px; }
-    .busy-sub { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 6px; }
+    .busy-question { font-size: 20px; font-weight: 600; text-align: center; padding: 0 32px; }
+    .busy-sub { font-size: 14px; color: var(--text-dim); text-align: center; margin-top: 8px; }
 
-    .busy-scale { display: flex; gap: 12px; padding: 0 24px; }
+    .busy-scale {
+      display: flex; gap: 10px;
+      padding: 0 20px; width: 100%;
+    }
     .busy-btn {
-      flex: 1; aspect-ratio: 1; border-radius: 12px;
+      flex: 1;
+      height: 80px;
+      border-radius: 14px;
       border: 1.5px solid var(--border); background: white;
-      font-size: 20px; font-weight: 600; color: var(--text);
+      font-size: 22px; font-weight: 600; color: var(--text);
       cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 4px;
+      align-items: center; justify-content: center; gap: 5px;
       transition: transform 0.1s, background 0.1s;
     }
     .busy-btn:active { transform: scale(0.93); background: #eee; }
     .busy-btn .busy-label { font-size: 9px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.03em; }
     .busy-skip {
       background: none; border: none; font-family: -apple-system, sans-serif;
-      font-size: 14px; color: var(--text-dim); cursor: pointer; padding: 4px;
+      font-size: 15px; color: var(--text-dim); cursor: pointer; padding: 8px 24px;
     }
     .busy-skip:active { color: var(--text); }
 
@@ -274,9 +279,9 @@
   </div>
   <div class="busy-scale">
     <button class="busy-btn" onclick="finishRecord(1)">1<span class="busy-label">empty</span></button>
-    <button class="busy-btn" onclick="finishRecord(2)">2<span class="busy-label"></span></button>
+    <button class="busy-btn" onclick="finishRecord(2)">2<span class="busy-label">empty+</span></button>
     <button class="busy-btn" onclick="finishRecord(3)">3<span class="busy-label">moderate</span></button>
-    <button class="busy-btn" onclick="finishRecord(4)">4<span class="busy-label"></span></button>
+    <button class="busy-btn" onclick="finishRecord(4)">4<span class="busy-label">moderate+</span></button>
     <button class="busy-btn" onclick="finishRecord(5)">5<span class="busy-label">packed</span></button>
   </div>
   <button class="busy-skip" onclick="finishRecord(null)">skip</button>
