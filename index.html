@@ -47,39 +47,25 @@
     }
     .screen.hidden { opacity: 0; pointer-events: none; }
 
-    /* ── MAIN SCREEN ── */
+    /* MAIN SCREEN */
     #screen-main { align-items: center; justify-content: space-between; }
 
     .main-title {
-      font-size: 22px;
-      font-weight: 600;
-      text-align: center;
-      padding: 24px 0 8px;
+      font-size: 22px; font-weight: 600;
+      text-align: center; padding: 24px 0 8px;
     }
-
     .timestamp-display {
-      font-size: 13px;
-      color: var(--text-dim);
-      text-align: center;
-      line-height: 1.7;
+      font-size: 13px; color: var(--text-dim);
+      text-align: center; line-height: 1.7;
     }
-
     .btn-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      width: 100%;
-      padding: 0 32px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; width: 100%; padding: 0 32px;
     }
-
     .answer-btn {
-      border: 1.5px solid transparent;
-      border-radius: 12px;
-      font-family: -apple-system, sans-serif;
-      font-size: 26px;
-      font-weight: 600;
-      padding: 40px 0;
-      cursor: pointer;
+      border: 1.5px solid transparent; border-radius: 12px;
+      font-family: -apple-system, sans-serif; font-size: 26px;
+      font-weight: 600; padding: 40px 0; cursor: pointer;
       transition: transform 0.1s ease, opacity 0.1s ease;
     }
     .answer-btn:active { transform: scale(0.96); opacity: 0.85; }
@@ -87,12 +73,8 @@
     .btn-no  { background: var(--no-bg);  color: var(--no);  border-color: #f0c0bb; }
 
     .status-stack {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      min-height: 40px;
-      padding: 0 24px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 5px; min-height: 40px; padding: 0 24px;
     }
     .geo-status { font-size: 11px; color: var(--text-dim); text-align: center; }
     .store-status {
@@ -102,92 +84,54 @@
     .store-status.visible { opacity: 1; }
     .store-status.dim { color: var(--text-dim); }
 
-    .bottom-bar {
-      width: 100%; padding: 0 32px;
-      display: flex; justify-content: center;
-    }
+    .bottom-bar { width: 100%; padding: 0 32px; display: flex; justify-content: center; }
     .history-btn {
-      width: 100%; padding: 14px;
-      background: white; border: 1px solid var(--border);
-      border-radius: 10px; font-family: -apple-system, sans-serif;
-      font-size: 15px; color: var(--text); cursor: pointer;
+      width: 100%; padding: 14px; background: white;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-family: -apple-system, sans-serif; font-size: 15px;
+      color: var(--text); cursor: pointer;
     }
     .history-btn:active { background: #eee; }
 
-    /* ── BUSYNESS SCREEN ── */
+    /* BUSYNESS SCREEN */
     #screen-busy { align-items: center; justify-content: center; gap: 32px; }
 
-    .busy-question {
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      padding: 0 32px;
-    }
-    .busy-sub {
-      font-size: 13px;
-      color: var(--text-dim);
-      text-align: center;
-      margin-top: 6px;
-    }
+    .busy-question { font-size: 18px; font-weight: 600; text-align: center; padding: 0 32px; }
+    .busy-sub { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: 6px; }
 
-    .busy-scale {
-      display: flex;
-      gap: 12px;
-      padding: 0 24px;
-    }
+    .busy-scale { display: flex; gap: 12px; padding: 0 24px; }
     .busy-btn {
-      flex: 1;
-      aspect-ratio: 1;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      background: white;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
+      flex: 1; aspect-ratio: 1; border-radius: 12px;
+      border: 1.5px solid var(--border); background: white;
+      font-size: 20px; font-weight: 600; color: var(--text);
+      cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 4px;
       transition: transform 0.1s, background 0.1s;
     }
     .busy-btn:active { transform: scale(0.93); background: #eee; }
-    .busy-btn .busy-label {
-      font-size: 9px;
-      font-weight: 400;
-      color: var(--text-dim);
-      letter-spacing: 0.03em;
-    }
-
+    .busy-btn .busy-label { font-size: 9px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.03em; }
     .busy-skip {
-      background: none; border: none;
-      font-family: -apple-system, sans-serif;
-      font-size: 14px; color: var(--text-dim);
-      cursor: pointer; padding: 4px;
+      background: none; border: none; font-family: -apple-system, sans-serif;
+      font-size: 14px; color: var(--text-dim); cursor: pointer; padding: 4px;
     }
     .busy-skip:active { color: var(--text); }
 
-    /* ── TOAST ── */
+    /* TOAST */
     .toast {
-      position: fixed;
-      bottom: calc(var(--safe-bottom) + 90px);
-      left: 50%;
-      transform: translateX(-50%) translateY(16px);
-      background: #222; color: white;
-      font-size: 13px; padding: 9px 20px;
-      border-radius: 100px; opacity: 0;
-      transition: all 0.25s ease;
-      pointer-events: none; white-space: nowrap; z-index: 100;
+      position: fixed; bottom: calc(var(--safe-bottom) + 90px);
+      left: 50%; transform: translateX(-50%) translateY(16px);
+      background: #222; color: white; font-size: 13px;
+      padding: 9px 20px; border-radius: 100px; opacity: 0;
+      transition: all 0.25s ease; pointer-events: none;
+      white-space: nowrap; z-index: 100;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ── LOG SCREEN ── */
+    /* LOG SCREEN */
     #screen-log { overflow: hidden; }
 
     .log-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center;
       justify-content: space-between; flex-shrink: 0;
     }
@@ -197,8 +141,8 @@
     .log-stats .no-count  { color: var(--no);  font-weight: 500; }
 
     .log-toolbar {
-      padding: 10px 20px;
-      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px; display: flex;
+      justify-content: space-between; align-items: center;
       border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
     .back-btn, .export-btn {
@@ -215,23 +159,16 @@
 
     .log-day-label {
       font-size: 12px; color: var(--text-dim); font-weight: 500;
-      padding: 12px 20px 4px; background: var(--bg);
-      position: sticky; top: 0;
+      padding: 12px 20px 4px; background: var(--bg); position: sticky; top: 0;
     }
-
     .log-row {
-      display: grid;
-      grid-template-columns: 44px 1fr 28px;
-      align-items: start;
-      gap: 10px; padding: 10px 20px;
-      border-bottom: 1px solid #ebebeb;
-      background: white;
+      display: grid; grid-template-columns: 44px 1fr 28px;
+      align-items: start; gap: 10px; padding: 10px 20px;
+      border-bottom: 1px solid #ebebeb; background: white;
     }
-
     .log-badge {
-      font-size: 13px; font-weight: 600;
-      text-align: center; padding: 3px 0;
-      border-radius: 6px; margin-top: 1px;
+      font-size: 13px; font-weight: 600; text-align: center;
+      padding: 3px 0; border-radius: 6px; margin-top: 1px;
     }
     .log-badge.yes { color: var(--yes); background: var(--yes-bg); }
     .log-badge.no  { color: var(--no);  background: var(--no-bg);  }
@@ -248,6 +185,55 @@
       font-size: 18px; cursor: pointer; padding: 2px 4px; line-height: 1;
     }
     .log-delete:active { color: var(--no); }
+
+    /* CLEAR BUTTON AREA */
+    .log-footer {
+      flex-shrink: 0;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .clear-btn {
+      background: none; border: 1px solid #e0b0b0;
+      border-radius: 7px; font-family: -apple-system, sans-serif;
+      font-size: 13px; color: #c0392b; padding: 8px 24px; cursor: pointer;
+      width: 100%;
+    }
+    .clear-btn:active { background: #fdecea; }
+
+    /* confirmation row — hidden by default */
+    .clear-confirm {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .clear-confirm.visible { display: flex; }
+    .clear-confirm-msg {
+      font-size: 13px; color: var(--text-dim); text-align: center;
+    }
+    .clear-confirm-btns {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; width: 100%;
+    }
+    .clear-cancel-btn {
+      padding: 9px; border-radius: 7px;
+      border: 1px solid var(--border); background: white;
+      font-family: -apple-system, sans-serif; font-size: 14px;
+      color: var(--text); cursor: pointer;
+    }
+    .clear-cancel-btn:active { background: #eee; }
+    .clear-confirm-btn {
+      padding: 9px; border-radius: 7px;
+      border: 1px solid #e0b0b0; background: #fdecea;
+      font-family: -apple-system, sans-serif; font-size: 14px;
+      font-weight: 600; color: #c0392b; cursor: pointer;
+    }
+    .clear-confirm-btn:active { background: #f5c6c6; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
@@ -310,6 +296,17 @@
     <button class="export-btn" onclick="exportCSV()">Export CSV</button>
   </div>
   <div class="log-list" id="log-list"></div>
+
+  <div class="log-footer">
+    <button class="clear-btn" id="clear-btn" onclick="showClearConfirm()">Clear All Data</button>
+    <div class="clear-confirm" id="clear-confirm">
+      <div class="clear-confirm-msg">This will permanently delete all entries. Are you sure?</div>
+      <div class="clear-confirm-btns">
+        <button class="clear-cancel-btn" onclick="hideClearConfirm()">Cancel</button>
+        <button class="clear-confirm-btn" onclick="clearAllData()">Yes, delete all</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -317,7 +314,7 @@
 <script>
   const STORAGE_KEY = 'yesno_log_v1';
   let entries = [];
-  let pendingEntry = null; // holds entry between yes/no tap and busyness selection
+  let pendingEntry = null;
 
   function load() {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -325,7 +322,6 @@
   }
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
 
-  // Clock
   function updateClock() {
     const now = new Date();
     document.getElementById('display-date').textContent =
@@ -336,7 +332,6 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // GPS
   let currentGeo = null;
   function startGeo() {
     const el = document.getElementById('geo-status');
@@ -355,7 +350,6 @@
   }
   startGeo();
 
-  // Haversine
   function haversine(lat1, lng1, lat2, lng2) {
     const R = 6371000, r = x => x * Math.PI / 180;
     const dLat = r(lat2-lat1), dLng = r(lng2-lng1);
@@ -363,7 +357,6 @@
     return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
   }
 
-  // Overpass
   async function findNearbyRetail(lat, lng) {
     const q = `[out:json][timeout:10];
 (
@@ -396,21 +389,16 @@ out center;`;
       .sort((a, b) => a.dist - b.dist);
   }
 
-  // Step 1: tap Yes or No → show busyness screen
   function startRecord(answer) {
     pendingEntry = {
-      id: Date.now(),
-      answer,
+      id: Date.now(), answer,
       ts: new Date().toISOString(),
       geo: currentGeo ? { ...currentGeo } : null,
-      busyness: null,
-      nearby: null,
-      nearbyStatus: 'pending'
+      busyness: null, nearby: null, nearbyStatus: 'pending'
     };
     showBusy();
   }
 
-  // Step 2: tap busyness (or skip) → save and kick off store lookup
   async function finishRecord(busyness) {
     if (!pendingEntry) return;
     pendingEntry.busyness = busyness;
@@ -464,7 +452,6 @@ out center;`;
     toastTimer = setTimeout(() => el.className = 'toast', 1800);
   }
 
-  // Nav
   function showMain() {
     document.getElementById('screen-busy').classList.add('hidden');
     document.getElementById('screen-log').classList.add('hidden');
@@ -475,12 +462,28 @@ out center;`;
     document.getElementById('screen-busy').classList.remove('hidden');
   }
   function showLog() {
+    hideClearConfirm();
     renderLog();
     document.getElementById('screen-main').classList.add('hidden');
     document.getElementById('screen-log').classList.remove('hidden');
   }
 
-  // Render log
+  function showClearConfirm() {
+    document.getElementById('clear-btn').style.display = 'none';
+    document.getElementById('clear-confirm').classList.add('visible');
+  }
+  function hideClearConfirm() {
+    document.getElementById('clear-btn').style.display = '';
+    document.getElementById('clear-confirm').classList.remove('visible');
+  }
+  function clearAllData() {
+    entries = [];
+    localStorage.removeItem(STORAGE_KEY);
+    hideClearConfirm();
+    renderLog();
+    showToast('cleared');
+  }
+
   function renderLog() {
     const list = document.getElementById('log-list');
     document.getElementById('stat-yes').textContent = entries.filter(e => e.answer==='yes').length;
@@ -494,8 +497,6 @@ out center;`;
         { weekday:'long', month:'long', day:'numeric', year:'numeric' });
       (groups[d] = groups[d] || []).push(e);
     });
-
-    const busyLabel = n => n ? `lot busyness: ${n}/5` : '';
 
     list.innerHTML = Object.entries(groups).map(([date, items]) => `
       <div class="log-day-label">${date}</div>
