@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LOG</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LOG" />
+  <meta name="theme-color" content="#0a0a0a" />
+
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0a'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' font-family='Georgia,serif' fill='%23f0ece4'%3E✦%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --text: #f0ece4;
+      --text-dim: #6b6560;
+      --text-mid: #9e9890;
+      --yes: #4ade80;
+      --yes-bg: #052010;
+      --no: #f87171;
+      --no-bg: #1a0505;
+      --accent: #c9b99a;
+      --store: #7dd3fc;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding-top: calc(var(--safe-top) + 16px);
+      padding-bottom: calc(var(--safe-bottom) + 16px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+    }
+    .nav-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-mid);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .nav-btn:active { background: var(--surface); color: var(--text); }
+
+    /* MAIN */
+    #screen-main { justify-content: center; align-items: center; }
+
+    .entry-area {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timestamp-display {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-bottom: 48px;
+      line-height: 1.9;
+    }
+    .timestamp-display .date-line { font-size: 13px; color: var(--text-mid); }
+
+    .btn-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .answer-btn {
+      border: none;
+      border-radius: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 36px 0;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .answer-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+    .answer-btn:active::after { opacity: 0.08; }
+    .answer-btn:active { transform: scale(0.97); }
+
+    .btn-yes { background: var(--yes-bg); color: var(--yes); border: 1px solid #0d3a1e; }
+    .btn-yes:active { box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
+    .btn-no  { background: var(--no-bg);  color: var(--no);  border: 1px solid #3a0d0d; }
+    .btn-no:active  { box-shadow: 0 0 0 3px rgba(248,113,113,0.2); }
+
+    .btn-sublabel {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      margin-top: 4px;
+      opacity: 0.5;
+    }
+
+    .status-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-height: 40px;
+    }
+    .geo-status { font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-align: center; }
+    .geo-status.active { color: #4ade8055; }
+    .geo-status.error  { color: #f8717155; }
+
+    .store-status {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-align: center;
+      color: var(--store);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .store-status.visible { opacity: 1; }
+    .store-status.dim { color: var(--text-dim); }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: calc(var(--safe-bottom) + 80px);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-mid);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 10px 20px;
+      border-radius: 100px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.yes { border-color: #0d3a1e; color: var(--yes); }
+    .toast.no  { border-color: #3a0d0d; color: var(--no); }
+
+    /* LOG SCREEN */
+    #screen-log { overflow: hidden; }
+
+    .log-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .log-title { font-size: 11px; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
+    .log-stats { display: flex; gap: 16px; }
+    .stat { font-size: 11px; letter-spacing: 0.05em; }
+    .stat .val { font-weight: 500; }
+    .stat.yes-stat .val { color: var(--yes); }
+    .stat.no-stat  .val { color: var(--no);  }
+
+    .export-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .export-btn:active { background: var(--surface); }
+
+    .log-list {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 24px 16px;
+    }
+    .log-empty { text-align: center; color: var(--text-dim); font-size: 12px; letter-spacing: 0.08em; margin-top: 60px; }
+
+    .log-day-group { margin-top: 24px; }
+    .log-day-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .log-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .log-row:last-child { border-bottom: none; }
+
+    .log-badge {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 4px;
+      margin-top: 2px;
+    }
+    .log-badge.yes { color: var(--yes); background: var(--yes-bg); }
+    .log-badge.no  { color: var(--no);  background: var(--no-bg);  }
+
+    .log-meta { display: flex; flex-direction: column; gap: 3px; }
+    .log-time  { font-size: 12px; color: var(--text-mid); }
+    .log-geo   { font-size: 10px; color: var(--text-dim); letter-spacing: 0.04em; }
+    .log-store { font-size: 11px; color: var(--store); letter-spacing: 0.04em; }
+    .log-store.none { color: var(--text-dim); }
+
+    .log-delete {
+      background: none; border: none; color: var(--border);
+      font-size: 16px; cursor: pointer; padding: 4px 8px; transition: color 0.15s;
+    }
+    .log-delete:active { color: var(--no); }
+
+    .log-list::-webkit-scrollbar { width: 2px; }
+    .log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block; width: 9px; height: 9px;
+      border: 1.5px solid var(--text-dim); border-top-color: var(--store);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="screen" id="screen-main">
+  <div class="header">
+    <span class="logo">✦ LOG</span>
+    <button class="nav-btn" onclick="showLog()">HISTORY</button>
+  </div>
+  <div class="entry-area">
+    <div class="timestamp-display">
+      <div class="date-line" id="display-date">—</div>
+      <div id="display-time">—</div>
+    </div>
+    <div class="btn-pair">
+      <button class="answer-btn btn-yes" onclick="record('yes')">
+        Yes<span class="btn-sublabel">affirm</span>
+      </button>
+      <button class="answer-btn btn-no" onclick="record('no')">
+        No<span class="btn-sublabel">deny</span>
+      </button>
+    </div>
+    <div class="status-stack">
+      <div class="geo-status" id="geo-status">acquiring location…</div>
+      <div class="store-status" id="store-status"></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen hidden" id="screen-log">
+  <div class="header">
+    <span class="logo">✦ LOG</span>
+    <button class="nav-btn" onclick="showMain()">← BACK</button>
+  </div>
+  <div class="log-header">
+    <span class="log-title">All Entries</span>
+    <div class="log-stats">
+      <span class="stat yes-stat"><span class="val" id="stat-yes">0</span> yes</span>
+      <span class="stat no-stat"><span class="val" id="stat-no">0</span> no</span>
+    </div>
+    <button class="export-btn" onclick="exportCSV()">CSV ↓</button>
+  </div>
+  <div class="log-list" id="log-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'yesno_log_v1';
+  let entries = [];
+
+  function load() {
+    try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { entries = []; }
+  }
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
+
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('display-date').textContent =
+      now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    document.getElementById('display-time').textContent =
+      now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // GPS
+  let currentGeo = null;
+  function startGeo() {
+    const el = document.getElementById('geo-status');
+    if (!navigator.geolocation) {
+      el.textContent = 'location unavailable'; el.className = 'geo-status error'; return;
+    }
+    navigator.geolocation.watchPosition(
+      pos => {
+        currentGeo = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy) };
+        el.textContent = `${currentGeo.lat.toFixed(5)}, ${currentGeo.lng.toFixed(5)}  ±${currentGeo.acc}m`;
+        el.className = 'geo-status active';
+      },
+      err => {
+        el.textContent = err.code === 1 ? 'location denied' : 'location error';
+        el.className = 'geo-status error';
+        currentGeo = null;
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
+  }
+  startGeo();
+
+  // Haversine distance in meters
+  function haversine(lat1, lng1, lat2, lng2) {
+    const R = 6371000, r = x => x * Math.PI / 180;
+    const dLat = r(lat2-lat1), dLng = r(lng2-lng1);
+    const a = Math.sin(dLat/2)**2 + Math.cos(r(lat1))*Math.cos(r(lat2))*Math.sin(dLng/2)**2;
+    return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+  }
+
+  // Overpass query — shops + common amenities within 300m
+  async function findNearbyRetail(lat, lng) {
+    const q = `[out:json][timeout:10];
+(
+  node["shop"](around:300,${lat},${lng});
+  way["shop"](around:300,${lat},${lng});
+  node["amenity"~"^(pharmacy|fast_food|restaurant|cafe|bank|fuel|supermarket)$"](around:300,${lat},${lng});
+  way["amenity"~"^(pharmacy|fast_food|restaurant|cafe|bank|fuel|supermarket)$"](around:300,${lat},${lng});
+);
+out center;`;
+
+    const resp = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      body: 'data=' + encodeURIComponent(q),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    if (!resp.ok) throw new Error('Overpass error');
+    const data = await resp.json();
+
+    return data.elements
+      .filter(el => el.tags)
+      .map(el => {
+        const elLat = el.lat ?? el.center?.lat;
+        const elLng = el.lon  ?? el.center?.lon;
+        if (!elLat || !elLng) return null;
+        return {
+          name: el.tags.name || el.tags.brand || null,
+          type: el.tags.shop || el.tags.amenity || 'retail',
+          dist: haversine(lat, lng, elLat, elLng)
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.dist - b.dist);
+  }
+
+  // Record entry
+  async function record(answer) {
+    const entry = {
+      id: Date.now(),
+      answer,
+      ts: new Date().toISOString(),
+      geo: currentGeo ? { ...currentGeo } : null,
+      nearby: null,
+      nearbyStatus: 'pending'
+    };
+    entries.unshift(entry);
+    save();
+    showToast(answer);
+
+    if (!currentGeo) {
+      entry.nearbyStatus = 'no-location';
+      save();
+      setStoreStatus('no location — store lookup skipped', true);
+      return;
+    }
+
+    setStoreStatus('<span class="spinner"></span>looking up nearby…', false);
+    try {
+      const results = await findNearbyRetail(currentGeo.lat, currentGeo.lng);
+      const top = results[0] || null;
+      entry.nearby = top
+        ? { name: top.name, type: top.type, dist: top.dist, totalFound: results.length }
+        : null;
+      entry.nearbyStatus = 'done';
+      save();
+
+      if (top) {
+        const label = top.name ? `${top.name}` : `${top.type}`;
+        setStoreStatus(`🏪 ${label} · ${top.dist}m away`, false);
+      } else {
+        setStoreStatus('no retail within 300m', true);
+      }
+    } catch {
+      entry.nearbyStatus = 'error';
+      save();
+      setStoreStatus('store lookup failed', true);
+    }
+  }
+
+  let storeTimer;
+  function setStoreStatus(html, dim) {
+    const el = document.getElementById('store-status');
+    el.innerHTML = html;
+    el.className = 'store-status visible' + (dim ? ' dim' : '');
+    clearTimeout(storeTimer);
+    storeTimer = setTimeout(() => { el.className = 'store-status'; }, 6000);
+  }
+
+  // Toast
+  let toastTimer;
+  function showToast(answer) {
+    const el = document.getElementById('toast');
+    el.textContent = answer === 'yes' ? '✓ YES recorded' : '✗ NO recorded';
+    el.className = `toast show ${answer}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.className = 'toast', 1800);
+  }
+
+  // Nav
+  function showMain() {
+    document.getElementById('screen-log').classList.add('hidden');
+    document.getElementById('screen-main').classList.remove('hidden');
+  }
+  function showLog() {
+    renderLog();
+    document.getElementById('screen-main').classList.add('hidden');
+    document.getElementById('screen-log').classList.remove('hidden');
+  }
+
+  // Render log
+  function renderLog() {
+    const list = document.getElementById('log-list');
+    document.getElementById('stat-yes').textContent = entries.filter(e => e.answer==='yes').length;
+    document.getElementById('stat-no').textContent  = entries.filter(e => e.answer==='no').length;
+
+    if (!entries.length) { list.innerHTML = '<div class="log-empty">no entries yet</div>'; return; }
+
+    const groups = {};
+    entries.forEach(e => {
+      const d = new Date(e.ts).toLocaleDateString('en-US',
+        { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+      (groups[d] = groups[d] || []).push(e);
+    });
+
+    list.innerHTML = Object.entries(groups).map(([date, items]) => `
+      <div class="log-day-group">
+        <div class="log-day-label">${date}</div>
+        ${items.map(e => {
+          let storeHtml;
+          if (e.nearby) {
+            const label = e.nearby.name || e.nearby.type;
+            storeHtml = `<span class="log-store">🏪 ${label} · ${e.nearby.dist}m</span>`;
+          } else if (e.nearbyStatus === 'pending') {
+            storeHtml = `<span class="log-store none">looking up…</span>`;
+          } else {
+            storeHtml = `<span class="log-store none">no retail nearby</span>`;
+          }
+          return `
+            <div class="log-row">
+              <span class="log-badge ${e.answer}">${e.answer==='yes'?'Yes':'No'}</span>
+              <div class="log-meta">
+                <span class="log-time">${new Date(e.ts).toLocaleTimeString('en-US',
+                  {hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span>
+                ${e.geo
+                  ? `<span class="log-geo">${e.geo.lat.toFixed(5)}, ${e.geo.lng.toFixed(5)}</span>`
+                  : '<span class="log-geo">no location</span>'}
+                ${storeHtml}
+              </div>
+              <button class="log-delete" onclick="deleteEntry(${e.id})">×</button>
+            </div>`;
+        }).join('')}
+      </div>`).join('');
+  }
+
+  function deleteEntry(id) {
+    entries = entries.filter(e => e.id !== id);
+    save(); renderLog();
+  }
+
+  // CSV export
+  function exportCSV() {
+    const header = 'id,answer,datetime,latitude,longitude,accuracy_m,nearest_place,place_type,dist_m,total_within_300m';
+    const rows = entries.map(e => [
+      e.id, e.answer, e.ts,
+      e.geo?.lat ?? '', e.geo?.lng ?? '', e.geo?.acc ?? '',
+      e.nearby?.name ? `"${e.nearby.name}"` : '',
+      e.nearby?.type ?? '',
+      e.nearby?.dist ?? '',
+      e.nearby?.totalFound ?? ''
+    ].join(','));
+    const csv = [header, ...rows].join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+    a.download = `yesno_log_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  }
+
+  load();
+</script>
+</body>
+</html>
