@@ -47,11 +47,8 @@
     }
     .screen.hidden { opacity: 0; pointer-events: none; }
 
-    /* MAIN SCREEN */
-    #screen-main {
-      align-items: center;
-      justify-content: space-between;
-    }
+    /* ── MAIN SCREEN ── */
+    #screen-main { align-items: center; justify-content: space-between; }
 
     .main-title {
       font-size: 22px;
@@ -86,7 +83,6 @@
       transition: transform 0.1s ease, opacity 0.1s ease;
     }
     .answer-btn:active { transform: scale(0.96); opacity: 0.85; }
-
     .btn-yes { background: var(--yes-bg); color: var(--yes); border-color: #b5d9b5; }
     .btn-no  { background: var(--no-bg);  color: var(--no);  border-color: #f0c0bb; }
 
@@ -98,66 +94,102 @@
       min-height: 40px;
       padding: 0 24px;
     }
-    .geo-status  { font-size: 11px; color: var(--text-dim); text-align: center; }
+    .geo-status { font-size: 11px; color: var(--text-dim); text-align: center; }
     .store-status {
-      font-size: 12px;
-      color: var(--store);
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.3s;
-      min-height: 16px;
+      font-size: 12px; color: var(--store); text-align: center;
+      opacity: 0; transition: opacity 0.3s; min-height: 16px;
     }
     .store-status.visible { opacity: 1; }
     .store-status.dim { color: var(--text-dim); }
 
     .bottom-bar {
-      width: 100%;
-      padding: 0 32px;
-      display: flex;
-      justify-content: center;
+      width: 100%; padding: 0 32px;
+      display: flex; justify-content: center;
     }
     .history-btn {
-      width: 100%;
-      padding: 14px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-family: -apple-system, sans-serif;
-      font-size: 15px;
-      color: var(--text);
-      cursor: pointer;
+      width: 100%; padding: 14px;
+      background: white; border: 1px solid var(--border);
+      border-radius: 10px; font-family: -apple-system, sans-serif;
+      font-size: 15px; color: var(--text); cursor: pointer;
     }
     .history-btn:active { background: #eee; }
 
-    /* TOAST */
+    /* ── BUSYNESS SCREEN ── */
+    #screen-busy { align-items: center; justify-content: center; gap: 32px; }
+
+    .busy-question {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      padding: 0 32px;
+    }
+    .busy-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .busy-scale {
+      display: flex;
+      gap: 12px;
+      padding: 0 24px;
+    }
+    .busy-btn {
+      flex: 1;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: white;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: transform 0.1s, background 0.1s;
+    }
+    .busy-btn:active { transform: scale(0.93); background: #eee; }
+    .busy-btn .busy-label {
+      font-size: 9px;
+      font-weight: 400;
+      color: var(--text-dim);
+      letter-spacing: 0.03em;
+    }
+
+    .busy-skip {
+      background: none; border: none;
+      font-family: -apple-system, sans-serif;
+      font-size: 14px; color: var(--text-dim);
+      cursor: pointer; padding: 4px;
+    }
+    .busy-skip:active { color: var(--text); }
+
+    /* ── TOAST ── */
     .toast {
       position: fixed;
       bottom: calc(var(--safe-bottom) + 90px);
       left: 50%;
       transform: translateX(-50%) translateY(16px);
-      background: #222;
-      color: white;
-      font-size: 13px;
-      padding: 9px 20px;
-      border-radius: 100px;
-      opacity: 0;
+      background: #222; color: white;
+      font-size: 13px; padding: 9px 20px;
+      border-radius: 100px; opacity: 0;
       transition: all 0.25s ease;
-      pointer-events: none;
-      white-space: nowrap;
-      z-index: 100;
+      pointer-events: none; white-space: nowrap; z-index: 100;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* LOG SCREEN */
+    /* ── LOG SCREEN ── */
     #screen-log { overflow: hidden; }
 
     .log-header {
       padding: 16px 20px;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-shrink: 0;
     }
     .log-header-title { font-size: 17px; font-weight: 600; }
     .log-stats { font-size: 13px; color: var(--text-dim); }
@@ -166,58 +198,40 @@
 
     .log-toolbar {
       padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
     .back-btn, .export-btn {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-family: -apple-system, sans-serif;
-      font-size: 13px;
-      color: var(--text);
-      padding: 6px 14px;
-      cursor: pointer;
+      background: none; border: 1px solid var(--border);
+      border-radius: 7px; font-family: -apple-system, sans-serif;
+      font-size: 13px; color: var(--text); padding: 6px 14px; cursor: pointer;
     }
     .back-btn:active, .export-btn:active { background: #eee; }
 
     .log-list {
-      flex: 1;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     }
     .log-empty { text-align: center; color: var(--text-dim); font-size: 14px; margin-top: 60px; }
 
     .log-day-label {
-      font-size: 12px;
-      color: var(--text-dim);
-      font-weight: 500;
-      padding: 12px 20px 4px;
-      background: var(--bg);
-      position: sticky;
-      top: 0;
+      font-size: 12px; color: var(--text-dim); font-weight: 500;
+      padding: 12px 20px 4px; background: var(--bg);
+      position: sticky; top: 0;
     }
 
     .log-row {
       display: grid;
       grid-template-columns: 44px 1fr 28px;
       align-items: start;
-      gap: 10px;
-      padding: 10px 20px;
+      gap: 10px; padding: 10px 20px;
       border-bottom: 1px solid #ebebeb;
       background: white;
     }
 
     .log-badge {
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      padding: 3px 0;
-      border-radius: 6px;
-      margin-top: 1px;
+      font-size: 13px; font-weight: 600;
+      text-align: center; padding: 3px 0;
+      border-radius: 6px; margin-top: 1px;
     }
     .log-badge.yes { color: var(--yes); background: var(--yes-bg); }
     .log-badge.no  { color: var(--no);  background: var(--no-bg);  }
@@ -227,11 +241,11 @@
     .log-geo   { font-size: 11px; color: var(--text-dim); }
     .log-store { font-size: 12px; color: var(--store); }
     .log-store.none { color: var(--text-dim); }
+    .log-busy  { font-size: 11px; color: var(--text-dim); }
 
     .log-delete {
       background: none; border: none; color: #ccc;
-      font-size: 18px; cursor: pointer; padding: 2px 4px;
-      line-height: 1;
+      font-size: 18px; cursor: pointer; padding: 2px 4px; line-height: 1;
     }
     .log-delete:active { color: var(--no); }
 
@@ -246,29 +260,43 @@
 </head>
 <body>
 
+<!-- MAIN SCREEN -->
 <div class="screen" id="screen-main">
   <div class="main-title">Did It Happen?</div>
-
   <div class="timestamp-display">
     <div id="display-date">—</div>
     <div id="display-time">—</div>
   </div>
-
   <div class="btn-pair">
-    <button class="answer-btn btn-yes" onclick="record('yes')">Yes</button>
-    <button class="answer-btn btn-no"  onclick="record('no')">No</button>
+    <button class="answer-btn btn-yes" onclick="startRecord('yes')">Yes</button>
+    <button class="answer-btn btn-no"  onclick="startRecord('no')">No</button>
   </div>
-
   <div class="status-stack">
     <div class="geo-status" id="geo-status">acquiring location…</div>
     <div class="store-status" id="store-status"></div>
   </div>
-
   <div class="bottom-bar">
     <button class="history-btn" onclick="showLog()">History</button>
   </div>
 </div>
 
+<!-- BUSYNESS SCREEN -->
+<div class="screen hidden" id="screen-busy">
+  <div>
+    <div class="busy-question">How busy was the lot?</div>
+    <div class="busy-sub">Just your gut feeling</div>
+  </div>
+  <div class="busy-scale">
+    <button class="busy-btn" onclick="finishRecord(1)">1<span class="busy-label">empty</span></button>
+    <button class="busy-btn" onclick="finishRecord(2)">2<span class="busy-label"></span></button>
+    <button class="busy-btn" onclick="finishRecord(3)">3<span class="busy-label">moderate</span></button>
+    <button class="busy-btn" onclick="finishRecord(4)">4<span class="busy-label"></span></button>
+    <button class="busy-btn" onclick="finishRecord(5)">5<span class="busy-label">packed</span></button>
+  </div>
+  <button class="busy-skip" onclick="finishRecord(null)">skip</button>
+</div>
+
+<!-- LOG SCREEN -->
 <div class="screen hidden" id="screen-log">
   <div class="log-header">
     <span class="log-header-title">History</span>
@@ -289,6 +317,7 @@
 <script>
   const STORAGE_KEY = 'yesno_log_v1';
   let entries = [];
+  let pendingEntry = null; // holds entry between yes/no tap and busyness selection
 
   function load() {
     try { entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -296,6 +325,7 @@
   }
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
 
+  // Clock
   function updateClock() {
     const now = new Date();
     document.getElementById('display-date').textContent =
@@ -306,6 +336,7 @@
   setInterval(updateClock, 1000);
   updateClock();
 
+  // GPS
   let currentGeo = null;
   function startGeo() {
     const el = document.getElementById('geo-status');
@@ -324,6 +355,7 @@
   }
   startGeo();
 
+  // Haversine
   function haversine(lat1, lng1, lat2, lng2) {
     const R = 6371000, r = x => x * Math.PI / 180;
     const dLat = r(lat2-lat1), dLng = r(lng2-lng1);
@@ -331,6 +363,7 @@
     return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
   }
 
+  // Overpass
   async function findNearbyRetail(lat, lng) {
     const q = `[out:json][timeout:10];
 (
@@ -363,18 +396,33 @@ out center;`;
       .sort((a, b) => a.dist - b.dist);
   }
 
-  async function record(answer) {
-    const entry = {
-      id: Date.now(), answer,
+  // Step 1: tap Yes or No → show busyness screen
+  function startRecord(answer) {
+    pendingEntry = {
+      id: Date.now(),
+      answer,
       ts: new Date().toISOString(),
       geo: currentGeo ? { ...currentGeo } : null,
-      nearby: null, nearbyStatus: 'pending'
+      busyness: null,
+      nearby: null,
+      nearbyStatus: 'pending'
     };
-    entries.unshift(entry);
-    save();
-    showToast(answer);
+    showBusy();
+  }
 
-    if (!currentGeo) {
+  // Step 2: tap busyness (or skip) → save and kick off store lookup
+  async function finishRecord(busyness) {
+    if (!pendingEntry) return;
+    pendingEntry.busyness = busyness;
+    entries.unshift(pendingEntry);
+    save();
+    showToast(pendingEntry.answer);
+
+    const entry = pendingEntry;
+    pendingEntry = null;
+    showMain();
+
+    if (!entry.geo) {
       entry.nearbyStatus = 'no-location'; save();
       setStoreStatus('no location — store lookup skipped', true);
       return;
@@ -382,7 +430,7 @@ out center;`;
 
     setStoreStatus('<span class="spinner"></span>looking up nearby…', false);
     try {
-      const results = await findNearbyRetail(currentGeo.lat, currentGeo.lng);
+      const results = await findNearbyRetail(entry.geo.lat, entry.geo.lng);
       const top = results[0] || null;
       entry.nearby = top ? { name: top.name, type: top.type, dist: top.dist, totalFound: results.length } : null;
       entry.nearbyStatus = 'done';
@@ -416,9 +464,15 @@ out center;`;
     toastTimer = setTimeout(() => el.className = 'toast', 1800);
   }
 
+  // Nav
   function showMain() {
+    document.getElementById('screen-busy').classList.add('hidden');
     document.getElementById('screen-log').classList.add('hidden');
     document.getElementById('screen-main').classList.remove('hidden');
+  }
+  function showBusy() {
+    document.getElementById('screen-main').classList.add('hidden');
+    document.getElementById('screen-busy').classList.remove('hidden');
   }
   function showLog() {
     renderLog();
@@ -426,6 +480,7 @@ out center;`;
     document.getElementById('screen-log').classList.remove('hidden');
   }
 
+  // Render log
   function renderLog() {
     const list = document.getElementById('log-list');
     document.getElementById('stat-yes').textContent = entries.filter(e => e.answer==='yes').length;
@@ -439,6 +494,8 @@ out center;`;
         { weekday:'long', month:'long', day:'numeric', year:'numeric' });
       (groups[d] = groups[d] || []).push(e);
     });
+
+    const busyLabel = n => n ? `lot busyness: ${n}/5` : '';
 
     list.innerHTML = Object.entries(groups).map(([date, items]) => `
       <div class="log-day-label">${date}</div>
@@ -461,6 +518,7 @@ out center;`;
                 ? `<span class="log-geo">${e.geo.lat.toFixed(5)}, ${e.geo.lng.toFixed(5)}</span>`
                 : '<span class="log-geo">no location</span>'}
               ${storeHtml}
+              ${e.busyness ? `<span class="log-busy">lot busyness: ${e.busyness}/5</span>` : ''}
             </div>
             <button class="log-delete" onclick="deleteEntry(${e.id})">×</button>
           </div>`;
@@ -474,10 +532,11 @@ out center;`;
   }
 
   function exportCSV() {
-    const header = 'id,answer,datetime,latitude,longitude,accuracy_m,nearest_place,place_type,dist_m,total_within_300m';
+    const header = 'id,answer,datetime,latitude,longitude,accuracy_m,busyness,nearest_place,place_type,dist_m,total_within_300m';
     const rows = entries.map(e => [
       e.id, e.answer, e.ts,
       e.geo?.lat ?? '', e.geo?.lng ?? '', e.geo?.acc ?? '',
+      e.busyness ?? '',
       e.nearby?.name ? `"${e.nearby.name}"` : '',
       e.nearby?.type ?? '', e.nearby?.dist ?? '', e.nearby?.totalFound ?? ''
     ].join(','));
