@@ -3,33 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>LOG</title>
+  <title>Did It Happen?</title>
 
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="LOG" />
-  <meta name="theme-color" content="#0a0a0a" />
-
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0a'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' font-family='Georgia,serif' fill='%23f0ece4'%3E✦%3C/text%3E%3C/svg%3E" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Did It Happen?" />
+  <meta name="theme-color" content="#f5f5f5" />
 
   <style>
     :root {
-      --bg: #0a0a0a;
-      --surface: #141414;
-      --border: #2a2a2a;
-      --text: #f0ece4;
-      --text-dim: #6b6560;
-      --text-mid: #9e9890;
-      --yes: #4ade80;
-      --yes-bg: #052010;
-      --no: #f87171;
-      --no-bg: #1a0505;
-      --accent: #c9b99a;
-      --store: #7dd3fc;
+      --bg: #f5f5f5;
+      --text: #111;
+      --text-dim: #888;
+      --border: #ddd;
+      --yes: #2a7a2a;
+      --yes-bg: #e8f5e8;
+      --no: #a02020;
+      --no-bg: #fdecea;
+      --store: #1a6090;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -40,7 +31,7 @@
       height: 100%;
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
+      font-family: -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow: hidden;
     }
@@ -52,290 +43,243 @@
       flex-direction: column;
       padding-top: calc(var(--safe-top) + 16px);
       padding-bottom: calc(var(--safe-bottom) + 16px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      transition: opacity 0.2s ease;
     }
-    .screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(12px);
-    }
+    .screen.hidden { opacity: 0; pointer-events: none; }
 
-    .header {
-      display: flex;
+    /* MAIN SCREEN */
+    #screen-main {
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px 16px;
-      border-bottom: 1px solid var(--border);
     }
-    .logo {
-      font-family: 'Playfair Display', serif;
+
+    .main-title {
       font-size: 22px;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-    }
-    .nav-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-mid);
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .nav-btn:active { background: var(--surface); color: var(--text); }
-
-    /* MAIN */
-    #screen-main { justify-content: center; align-items: center; }
-
-    .entry-area {
-      width: 100%;
-      max-width: 420px;
-      padding: 0 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-weight: 600;
+      text-align: center;
+      padding: 24px 0 8px;
     }
 
     .timestamp-display {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-dim);
-      letter-spacing: 0.08em;
       text-align: center;
-      margin-bottom: 48px;
-      line-height: 1.9;
+      line-height: 1.7;
     }
-    .timestamp-display .date-line { font-size: 13px; color: var(--text-mid); }
 
     .btn-pair {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
       width: 100%;
-      margin-bottom: 40px;
+      padding: 0 32px;
     }
 
     .answer-btn {
-      border: none;
-      border-radius: 10px;
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      padding: 36px 0;
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      font-family: -apple-system, sans-serif;
+      font-size: 26px;
+      font-weight: 600;
+      padding: 40px 0;
       cursor: pointer;
-      transition: all 0.12s ease;
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.1s ease, opacity 0.1s ease;
     }
-    .answer-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: white;
-      opacity: 0;
-      transition: opacity 0.1s;
-    }
-    .answer-btn:active::after { opacity: 0.08; }
-    .answer-btn:active { transform: scale(0.97); }
+    .answer-btn:active { transform: scale(0.96); opacity: 0.85; }
 
-    .btn-yes { background: var(--yes-bg); color: var(--yes); border: 1px solid #0d3a1e; }
-    .btn-yes:active { box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
-    .btn-no  { background: var(--no-bg);  color: var(--no);  border: 1px solid #3a0d0d; }
-    .btn-no:active  { box-shadow: 0 0 0 3px rgba(248,113,113,0.2); }
-
-    .btn-sublabel {
-      display: block;
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      margin-top: 4px;
-      opacity: 0.5;
-    }
+    .btn-yes { background: var(--yes-bg); color: var(--yes); border-color: #b5d9b5; }
+    .btn-no  { background: var(--no-bg);  color: var(--no);  border-color: #f0c0bb; }
 
     .status-stack {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       min-height: 40px;
+      padding: 0 24px;
     }
-    .geo-status { font-size: 10px; color: var(--text-dim); letter-spacing: 0.08em; text-align: center; }
-    .geo-status.active { color: #4ade8055; }
-    .geo-status.error  { color: #f8717155; }
-
+    .geo-status  { font-size: 11px; color: var(--text-dim); text-align: center; }
     .store-status {
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-align: center;
+      font-size: 12px;
       color: var(--store);
+      text-align: center;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.3s;
+      min-height: 16px;
     }
     .store-status.visible { opacity: 1; }
     .store-status.dim { color: var(--text-dim); }
 
+    .bottom-bar {
+      width: 100%;
+      padding: 0 32px;
+      display: flex;
+      justify-content: center;
+    }
+    .history-btn {
+      width: 100%;
+      padding: 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: -apple-system, sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .history-btn:active { background: #eee; }
+
     /* TOAST */
     .toast {
       position: fixed;
-      bottom: calc(var(--safe-bottom) + 80px);
+      bottom: calc(var(--safe-bottom) + 90px);
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text-mid);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      padding: 10px 20px;
+      transform: translateX(-50%) translateY(16px);
+      background: #222;
+      color: white;
+      font-size: 13px;
+      padding: 9px 20px;
       border-radius: 100px;
       opacity: 0;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       pointer-events: none;
       white-space: nowrap;
       z-index: 100;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .toast.yes { border-color: #0d3a1e; color: var(--yes); }
-    .toast.no  { border-color: #3a0d0d; color: var(--no); }
 
     /* LOG SCREEN */
     #screen-log { overflow: hidden; }
 
     .log-header {
-      padding: 16px 24px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
       flex-shrink: 0;
     }
-    .log-title { font-size: 11px; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
-    .log-stats { display: flex; gap: 16px; }
-    .stat { font-size: 11px; letter-spacing: 0.05em; }
-    .stat .val { font-weight: 500; }
-    .stat.yes-stat .val { color: var(--yes); }
-    .stat.no-stat  .val { color: var(--no);  }
+    .log-header-title { font-size: 17px; font-weight: 600; }
+    .log-stats { font-size: 13px; color: var(--text-dim); }
+    .log-stats .yes-count { color: var(--yes); font-weight: 500; }
+    .log-stats .no-count  { color: var(--no);  font-weight: 500; }
 
-    .export-btn {
+    .log-toolbar {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .back-btn, .export-btn {
       background: none;
       border: 1px solid var(--border);
-      color: var(--text-dim);
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      padding: 5px 10px;
-      border-radius: 4px;
+      border-radius: 7px;
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      padding: 6px 14px;
       cursor: pointer;
     }
-    .export-btn:active { background: var(--surface); }
+    .back-btn:active, .export-btn:active { background: #eee; }
 
     .log-list {
       flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 0 24px 16px;
     }
-    .log-empty { text-align: center; color: var(--text-dim); font-size: 12px; letter-spacing: 0.08em; margin-top: 60px; }
+    .log-empty { text-align: center; color: var(--text-dim); font-size: 14px; margin-top: 60px; }
 
-    .log-day-group { margin-top: 24px; }
     .log-day-label {
-      font-size: 10px;
-      letter-spacing: 0.14em;
+      font-size: 12px;
       color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      padding: 12px 20px 4px;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
     }
 
     .log-row {
       display: grid;
-      grid-template-columns: 36px 1fr auto;
+      grid-template-columns: 44px 1fr 28px;
       align-items: start;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #1a1a1a;
+      gap: 10px;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ebebeb;
+      background: white;
     }
-    .log-row:last-child { border-bottom: none; }
 
     .log-badge {
-      font-family: 'Playfair Display', serif;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       text-align: center;
-      padding: 4px 0;
-      border-radius: 4px;
-      margin-top: 2px;
+      padding: 3px 0;
+      border-radius: 6px;
+      margin-top: 1px;
     }
     .log-badge.yes { color: var(--yes); background: var(--yes-bg); }
     .log-badge.no  { color: var(--no);  background: var(--no-bg);  }
 
-    .log-meta { display: flex; flex-direction: column; gap: 3px; }
-    .log-time  { font-size: 12px; color: var(--text-mid); }
-    .log-geo   { font-size: 10px; color: var(--text-dim); letter-spacing: 0.04em; }
-    .log-store { font-size: 11px; color: var(--store); letter-spacing: 0.04em; }
+    .log-meta { display: flex; flex-direction: column; gap: 2px; }
+    .log-time  { font-size: 13px; color: var(--text); }
+    .log-geo   { font-size: 11px; color: var(--text-dim); }
+    .log-store { font-size: 12px; color: var(--store); }
     .log-store.none { color: var(--text-dim); }
 
     .log-delete {
-      background: none; border: none; color: var(--border);
-      font-size: 16px; cursor: pointer; padding: 4px 8px; transition: color 0.15s;
+      background: none; border: none; color: #ccc;
+      font-size: 18px; cursor: pointer; padding: 2px 4px;
+      line-height: 1;
     }
     .log-delete:active { color: var(--no); }
-
-    .log-list::-webkit-scrollbar { width: 2px; }
-    .log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
       display: inline-block; width: 9px; height: 9px;
-      border: 1.5px solid var(--text-dim); border-top-color: var(--store);
+      border: 1.5px solid #ccc; border-top-color: var(--store);
       border-radius: 50%; animation: spin 0.7s linear infinite;
-      vertical-align: middle; margin-right: 5px;
+      vertical-align: middle; margin-right: 4px;
     }
   </style>
 </head>
 <body>
 
 <div class="screen" id="screen-main">
-  <div class="header">
-    <span class="logo">✦ LOG</span>
-    <button class="nav-btn" onclick="showLog()">HISTORY</button>
+  <div class="main-title">Did It Happen?</div>
+
+  <div class="timestamp-display">
+    <div id="display-date">—</div>
+    <div id="display-time">—</div>
   </div>
-  <div class="entry-area">
-    <div class="timestamp-display">
-      <div class="date-line" id="display-date">—</div>
-      <div id="display-time">—</div>
-    </div>
-    <div class="btn-pair">
-      <button class="answer-btn btn-yes" onclick="record('yes')">
-        Yes<span class="btn-sublabel">affirm</span>
-      </button>
-      <button class="answer-btn btn-no" onclick="record('no')">
-        No<span class="btn-sublabel">deny</span>
-      </button>
-    </div>
-    <div class="status-stack">
-      <div class="geo-status" id="geo-status">acquiring location…</div>
-      <div class="store-status" id="store-status"></div>
-    </div>
+
+  <div class="btn-pair">
+    <button class="answer-btn btn-yes" onclick="record('yes')">Yes</button>
+    <button class="answer-btn btn-no"  onclick="record('no')">No</button>
+  </div>
+
+  <div class="status-stack">
+    <div class="geo-status" id="geo-status">acquiring location…</div>
+    <div class="store-status" id="store-status"></div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="history-btn" onclick="showLog()">History</button>
   </div>
 </div>
 
 <div class="screen hidden" id="screen-log">
-  <div class="header">
-    <span class="logo">✦ LOG</span>
-    <button class="nav-btn" onclick="showMain()">← BACK</button>
-  </div>
   <div class="log-header">
-    <span class="log-title">All Entries</span>
-    <div class="log-stats">
-      <span class="stat yes-stat"><span class="val" id="stat-yes">0</span> yes</span>
-      <span class="stat no-stat"><span class="val" id="stat-no">0</span> no</span>
-    </div>
-    <button class="export-btn" onclick="exportCSV()">CSV ↓</button>
+    <span class="log-header-title">History</span>
+    <span class="log-stats">
+      <span class="yes-count" id="stat-yes">0</span> yes &nbsp;
+      <span class="no-count"  id="stat-no">0</span> no
+    </span>
+  </div>
+  <div class="log-toolbar">
+    <button class="back-btn" onclick="showMain()">← Back</button>
+    <button class="export-btn" onclick="exportCSV()">Export CSV</button>
   </div>
   <div class="log-list" id="log-list"></div>
 </div>
@@ -352,7 +296,6 @@
   }
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
 
-  // Clock
   function updateClock() {
     const now = new Date();
     document.getElementById('display-date').textContent =
@@ -363,22 +306,17 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // GPS
   let currentGeo = null;
   function startGeo() {
     const el = document.getElementById('geo-status');
-    if (!navigator.geolocation) {
-      el.textContent = 'location unavailable'; el.className = 'geo-status error'; return;
-    }
+    if (!navigator.geolocation) { el.textContent = 'location unavailable'; return; }
     navigator.geolocation.watchPosition(
       pos => {
         currentGeo = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy) };
         el.textContent = `${currentGeo.lat.toFixed(5)}, ${currentGeo.lng.toFixed(5)}  ±${currentGeo.acc}m`;
-        el.className = 'geo-status active';
       },
       err => {
         el.textContent = err.code === 1 ? 'location denied' : 'location error';
-        el.className = 'geo-status error';
         currentGeo = null;
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
@@ -386,7 +324,6 @@
   }
   startGeo();
 
-  // Haversine distance in meters
   function haversine(lat1, lng1, lat2, lng2) {
     const R = 6371000, r = x => x * Math.PI / 180;
     const dLat = r(lat2-lat1), dLng = r(lng2-lng1);
@@ -394,7 +331,6 @@
     return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
   }
 
-  // Overpass query — shops + common amenities within 300m
   async function findNearbyRetail(lat, lng) {
     const q = `[out:json][timeout:10];
 (
@@ -404,7 +340,6 @@
   way["amenity"~"^(pharmacy|fast_food|restaurant|cafe|bank|fuel|supermarket)$"](around:300,${lat},${lng});
 );
 out center;`;
-
     const resp = await fetch('https://overpass-api.de/api/interpreter', {
       method: 'POST',
       body: 'data=' + encodeURIComponent(q),
@@ -412,7 +347,6 @@ out center;`;
     });
     if (!resp.ok) throw new Error('Overpass error');
     const data = await resp.json();
-
     return data.elements
       .filter(el => el.tags)
       .map(el => {
@@ -429,23 +363,19 @@ out center;`;
       .sort((a, b) => a.dist - b.dist);
   }
 
-  // Record entry
   async function record(answer) {
     const entry = {
-      id: Date.now(),
-      answer,
+      id: Date.now(), answer,
       ts: new Date().toISOString(),
       geo: currentGeo ? { ...currentGeo } : null,
-      nearby: null,
-      nearbyStatus: 'pending'
+      nearby: null, nearbyStatus: 'pending'
     };
     entries.unshift(entry);
     save();
     showToast(answer);
 
     if (!currentGeo) {
-      entry.nearbyStatus = 'no-location';
-      save();
+      entry.nearbyStatus = 'no-location'; save();
       setStoreStatus('no location — store lookup skipped', true);
       return;
     }
@@ -454,21 +384,16 @@ out center;`;
     try {
       const results = await findNearbyRetail(currentGeo.lat, currentGeo.lng);
       const top = results[0] || null;
-      entry.nearby = top
-        ? { name: top.name, type: top.type, dist: top.dist, totalFound: results.length }
-        : null;
+      entry.nearby = top ? { name: top.name, type: top.type, dist: top.dist, totalFound: results.length } : null;
       entry.nearbyStatus = 'done';
       save();
-
       if (top) {
-        const label = top.name ? `${top.name}` : `${top.type}`;
-        setStoreStatus(`🏪 ${label} · ${top.dist}m away`, false);
+        setStoreStatus(`🏪 ${top.name || top.type} · ${top.dist}m away`, false);
       } else {
         setStoreStatus('no retail within 300m', true);
       }
     } catch {
-      entry.nearbyStatus = 'error';
-      save();
+      entry.nearbyStatus = 'error'; save();
       setStoreStatus('store lookup failed', true);
     }
   }
@@ -482,17 +407,15 @@ out center;`;
     storeTimer = setTimeout(() => { el.className = 'store-status'; }, 6000);
   }
 
-  // Toast
   let toastTimer;
   function showToast(answer) {
     const el = document.getElementById('toast');
-    el.textContent = answer === 'yes' ? '✓ YES recorded' : '✗ NO recorded';
-    el.className = `toast show ${answer}`;
+    el.textContent = answer === 'yes' ? 'Yes recorded' : 'No recorded';
+    el.className = 'toast show';
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.className = 'toast', 1800);
   }
 
-  // Nav
   function showMain() {
     document.getElementById('screen-log').classList.add('hidden');
     document.getElementById('screen-main').classList.remove('hidden');
@@ -503,13 +426,12 @@ out center;`;
     document.getElementById('screen-log').classList.remove('hidden');
   }
 
-  // Render log
   function renderLog() {
     const list = document.getElementById('log-list');
     document.getElementById('stat-yes').textContent = entries.filter(e => e.answer==='yes').length;
     document.getElementById('stat-no').textContent  = entries.filter(e => e.answer==='no').length;
 
-    if (!entries.length) { list.innerHTML = '<div class="log-empty">no entries yet</div>'; return; }
+    if (!entries.length) { list.innerHTML = '<div class="log-empty">No entries yet</div>'; return; }
 
     const groups = {};
     entries.forEach(e => {
@@ -519,33 +441,31 @@ out center;`;
     });
 
     list.innerHTML = Object.entries(groups).map(([date, items]) => `
-      <div class="log-day-group">
-        <div class="log-day-label">${date}</div>
-        ${items.map(e => {
-          let storeHtml;
-          if (e.nearby) {
-            const label = e.nearby.name || e.nearby.type;
-            storeHtml = `<span class="log-store">🏪 ${label} · ${e.nearby.dist}m</span>`;
-          } else if (e.nearbyStatus === 'pending') {
-            storeHtml = `<span class="log-store none">looking up…</span>`;
-          } else {
-            storeHtml = `<span class="log-store none">no retail nearby</span>`;
-          }
-          return `
-            <div class="log-row">
-              <span class="log-badge ${e.answer}">${e.answer==='yes'?'Yes':'No'}</span>
-              <div class="log-meta">
-                <span class="log-time">${new Date(e.ts).toLocaleTimeString('en-US',
-                  {hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span>
-                ${e.geo
-                  ? `<span class="log-geo">${e.geo.lat.toFixed(5)}, ${e.geo.lng.toFixed(5)}</span>`
-                  : '<span class="log-geo">no location</span>'}
-                ${storeHtml}
-              </div>
-              <button class="log-delete" onclick="deleteEntry(${e.id})">×</button>
-            </div>`;
-        }).join('')}
-      </div>`).join('');
+      <div class="log-day-label">${date}</div>
+      ${items.map(e => {
+        let storeHtml;
+        if (e.nearby) {
+          storeHtml = `<span class="log-store">🏪 ${e.nearby.name || e.nearby.type} · ${e.nearby.dist}m</span>`;
+        } else if (e.nearbyStatus === 'pending') {
+          storeHtml = `<span class="log-store none">looking up…</span>`;
+        } else {
+          storeHtml = `<span class="log-store none">no retail nearby</span>`;
+        }
+        return `
+          <div class="log-row">
+            <span class="log-badge ${e.answer}">${e.answer==='yes'?'Yes':'No'}</span>
+            <div class="log-meta">
+              <span class="log-time">${new Date(e.ts).toLocaleTimeString('en-US',
+                {hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span>
+              ${e.geo
+                ? `<span class="log-geo">${e.geo.lat.toFixed(5)}, ${e.geo.lng.toFixed(5)}</span>`
+                : '<span class="log-geo">no location</span>'}
+              ${storeHtml}
+            </div>
+            <button class="log-delete" onclick="deleteEntry(${e.id})">×</button>
+          </div>`;
+      }).join('')}`
+    ).join('');
   }
 
   function deleteEntry(id) {
@@ -553,21 +473,17 @@ out center;`;
     save(); renderLog();
   }
 
-  // CSV export
   function exportCSV() {
     const header = 'id,answer,datetime,latitude,longitude,accuracy_m,nearest_place,place_type,dist_m,total_within_300m';
     const rows = entries.map(e => [
       e.id, e.answer, e.ts,
       e.geo?.lat ?? '', e.geo?.lng ?? '', e.geo?.acc ?? '',
       e.nearby?.name ? `"${e.nearby.name}"` : '',
-      e.nearby?.type ?? '',
-      e.nearby?.dist ?? '',
-      e.nearby?.totalFound ?? ''
+      e.nearby?.type ?? '', e.nearby?.dist ?? '', e.nearby?.totalFound ?? ''
     ].join(','));
-    const csv = [header, ...rows].join('\n');
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
-    a.download = `yesno_log_${new Date().toISOString().slice(0,10)}.csv`;
+    a.href = URL.createObjectURL(new Blob([[header,...rows].join('\n')], {type:'text/csv'}));
+    a.download = `log_${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
   }
 
